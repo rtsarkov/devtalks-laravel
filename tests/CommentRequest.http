@@ -1,0 +1,25 @@
+POST http://localhost/api/comments
+Content-Type: application/json
+
+{
+    "task_id": 2,
+    "text": "New comment"
+}
+
+###
+PUT http://localhost/api/comments/10
+Content-Type: application/json
+
+{
+    "task_id": 2,
+    "text": "New comment"
+}
+
+###
+DELETE http://localhost/api/comments/20
+Content-Type: application/json
+
+###
+GET http://localhost/api/comments/2
+Accept: application/json
+

@@ -5,8 +5,10 @@ namespace App\Services;
 
 
 use App\DTO\CommentDTO;
+use App\Mail\CreateComment;
 use App\Models\Comment;
 use App\Repositories\CommentRepositoryInterface;
+use Illuminate\Support\Facades\Mail;
 
 class CommentService
 {
@@ -19,6 +21,7 @@ class CommentService
 
     public function create(CommentDTO $commentDTO)
     {
+        Mail::to(config('app.email_alert'))->queue(new CreateComment($commentDTO));
         return $this->commentRepository->create($commentDTO);
     }
 
