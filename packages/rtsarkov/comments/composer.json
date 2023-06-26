@@ -1,0 +1,22 @@
+{
+    "name": "rtsarkov/comments",
+    "description": "description",
+    "minimum-stability": "stable",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "roman.tsarkov",
+            "email": "email@example.com"
+        }
+    ],
+    "require": {
+        "php": "^8.1"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Rtsarkov\\Comments\\Providers\\CommentServiceProvider"
+            ]
+        }
+    }
+}
