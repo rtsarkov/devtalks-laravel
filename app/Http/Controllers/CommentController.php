@@ -6,6 +6,7 @@ use App\DTO\CommentDTO;
 use App\Http\DTO\ApiResponseDTO;
 use App\Http\Requests\CommnetCreateRequest;
 use App\Http\Requests\CommnetUpdateRequest;
+use App\Http\Resources\CommentCollection;
 use App\Models\Comment;
 use App\Repositories\CommentRepository;
 use App\Repositories\CommentRepositoryInterface;
@@ -30,12 +31,13 @@ class CommentController extends Controller
         return Response::json(['success' => true, 'message' => 'Комментарий принят!']);
     }
 
-    public function getForTask(int $task_id): \Illuminate\Http\JsonResponse
+    public function getForTask(int $task_id)
     {
-        return Response::json([
-            'success' => true,
-            'data' => $this->commentRepository->getForTask($task_id)
-        ]);
+        return new CommentCollection($this->commentRepository->getForTask($task_id));
+//        return Response::json([
+//            'success' => true,
+//            'data' => $this->commentRepository->getForTask($task_id)
+//        ]);
     }
 
     public function update(CommnetUpdateRequest $request, Comment $comment): \Illuminate\Http\JsonResponse

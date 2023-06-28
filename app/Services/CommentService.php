@@ -7,7 +7,9 @@ namespace App\Services;
 use App\DTO\CommentDTO;
 use App\Mail\CreateComment;
 use App\Models\Comment;
+use App\Models\Task;
 use App\Repositories\CommentRepositoryInterface;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 
 class CommentService
@@ -21,7 +23,6 @@ class CommentService
 
     public function create(CommentDTO $commentDTO)
     {
-        Mail::to(config('app.email_alert'))->queue(new CreateComment($commentDTO));
         return $this->commentRepository->create($commentDTO);
     }
 
@@ -33,6 +34,14 @@ class CommentService
     public function delete(int $id): bool
     {
         return $this->commentRepository->delete($id);
+    }
+
+    public static function clearCache()
+    {
+        $tasks = Task::all('id');
+        foreach ($tasks as $task) {
+            Cache::delete('taskComments_'. $task['id']);
+        }
     }
 
 }

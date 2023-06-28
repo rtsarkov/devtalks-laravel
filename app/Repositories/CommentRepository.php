@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\DTO\CommentDTO;
 use App\Models\Comment;
+use Illuminate\Support\Facades\Cache;
 
 class CommentRepository implements CommentRepositoryInterface
 {
@@ -33,11 +34,13 @@ class CommentRepository implements CommentRepositoryInterface
         return Comment::destroy($id);
     }
 
-    public function getForTask(int $task_id): array
+    public function getForTask(int $task_id)
     {
-        return Comment::query()
-            ->where('task_id', $task_id)
-            ->with('task')
-            ->get()->toArray();
+        return Cache::remember('taskComments_'.$task_id, 60*60*24, static function () use ($task_id) {
+            return Comment::query()
+                ->where('task_id', $task_id)
+                ->with('task')
+                ->get();
+        });
     }
 }
